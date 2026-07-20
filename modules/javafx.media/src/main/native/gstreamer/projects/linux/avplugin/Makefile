@@ -31,7 +31,8 @@ CFLAGS = -fPIC                   \
          -DGSTREAMER_LITE \
          -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_48 \
          -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_48 \
-         -ffunction-sections -fdata-sections
+         -ffunction-sections -fdata-sections \
+         $(EXTRA_CFLAGS)
 
 ifneq (,$(findstring $(ARCH), x64 x32))
     CFLAGS += -msse2
@@ -54,9 +55,10 @@ INCLUDES= -I../../../plugins                          \
 
 LDFLAGS = -L$(BUILD_DIR)    \
           -lgstreamer-lite  \
-           $(PACKAGES_LIBS) \
+          $(PACKAGES_LIBS) \
           -z relro          \
-          -static-libgcc -static-libstdc++ -Wl,--gc-sections
+          -static-libgcc -static-libstdc++ -Wl,--gc-sections \
+          $(EXTRA_LDFLAGS)
 
 ifneq ($(strip $(LIBAV_DIR)),)
 INCLUDES += -I$(LIBAV_DIR)/include

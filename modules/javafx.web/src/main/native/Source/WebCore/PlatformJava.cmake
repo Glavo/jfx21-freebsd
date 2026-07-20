@@ -55,6 +55,12 @@ elseif (APPLE)
     )
 endif ()
 
+if (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+    list(APPEND WebCore_SOURCES
+        platform/unix/SharedMemoryUnix.cpp
+    )
+endif ()
+
 #FIXME: Workaround
 list(APPEND WebCoreTestSupport_LIBRARIES ${SQLite3_LIBRARIES})
 

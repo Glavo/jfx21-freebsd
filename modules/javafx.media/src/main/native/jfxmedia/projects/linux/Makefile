@@ -28,6 +28,7 @@
 #
 
 BUILD_DIR = $(OUTPUT_DIR)/$(BUILD_TYPE)
+JNI_PLATFORM ?= linux
 
 SRCBASE_DIR = ../..
 OBJBASE_DIR = $(BUILD_DIR)/obj/jfxmedia
@@ -71,6 +72,7 @@ ifdef HOST_COMPILE
                   -Wformat-security \
                   -fstack-protector \
                   -Werror=trampolines \
+                  $(EXTRA_CFLAGS) \
 	          -DGSTREAMER_LITE
         ifneq (,$(findstring $(ARCH), x64 x32))
             CFLAGS += -msse2
@@ -82,7 +84,7 @@ ifdef HOST_COMPILE
 
 	INCLUDES = $(BASE_INCLUDES) \
 		   -I$(JAVA_HOME)/include \
-		   -I$(JAVA_HOME)/include/linux \
+		   -I$(JAVA_HOME)/include/$(JNI_PLATFORM) \
 	           -I$(GSTREAMER_LITE_DIR)/gstreamer \
 		   -I$(GSTREAMER_LITE_DIR)/gst-plugins-base/gst-libs \
 	           -I$(GSTREAMER_LITE_DIR)/gstreamer/libs \
@@ -91,7 +93,8 @@ ifdef HOST_COMPILE
 
 	LDFLAGS = -Wl,-rpath,\$$ORIGIN -L$(BUILD_DIR) -lgstreamer-lite $(PACKAGES_LIBS) \
             -z relro \
-            -static-libgcc -static-libstdc++ -Wl,--gc-sections
+            -static-libgcc -static-libstdc++ -Wl,--gc-sections \
+            $(EXTRA_LDFLAGS)
 else
 	CFLAGS += $(EXTRA_CFLAGS)
 	INCLUDES = $(BASE_INCLUDES)

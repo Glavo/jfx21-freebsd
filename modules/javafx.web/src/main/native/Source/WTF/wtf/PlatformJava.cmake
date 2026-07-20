@@ -90,12 +90,21 @@ elseif (UNIX)
     list(APPEND WTF_SOURCES
         generic/RunLoopGeneric.cpp
         generic/WorkQueueGeneric.cpp
-        linux/CurrentProcessMemoryStatus.cpp
-        linux/MemoryFootprintLinux.cpp
         unix/LanguageUnix.cpp
         unix/MemoryPressureHandlerUnix.cpp
-        linux/RealTimeThreads.cpp
+        unix/UniStdExtrasUnix.cpp
     )
+    if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+        list(APPEND WTF_SOURCES
+            linux/CurrentProcessMemoryStatus.cpp
+            linux/MemoryFootprintLinux.cpp
+            linux/RealTimeThreads.cpp
+        )
+    else ()
+        list(APPEND WTF_SOURCES
+            generic/MemoryFootprintGeneric.cpp
+        )
+    endif ()
     list(APPEND WTF_LIBRARIES rt)
 elseif (WIN32)
     list(APPEND WTF_SOURCES

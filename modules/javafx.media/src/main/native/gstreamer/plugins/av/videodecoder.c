@@ -554,7 +554,9 @@ static gboolean videodecoder_convert_frame(VideoDecoder *decoder)
     if (ret < 0)
         return FALSE;
 
+#if AVCODEC_REORDERED_OPAQUE
     decoder->dest_frame->reordered_opaque = base->frame->reordered_opaque;
+#endif
 
     return TRUE;
 }
@@ -711,10 +713,15 @@ static GstFlowReturn videodecoder_chain(GstPad *pad, GstObject *parent, GstBuffe
         if (av_new_packet(&decoder->packet, info.size) == 0)
         {
             memcpy(decoder->packet.data, info.data, info.size);
+#if AVCODEC_REORDERED_OPAQUE
             if (GST_BUFFER_TIMESTAMP_IS_VALID(buf))
                 base->context->reordered_opaque = GST_BUFFER_TIMESTAMP(buf);
             else
                 base->context->reordered_opaque = AV_NOPTS_VALUE;
+#else
+            if (GST_BUFFER_TIMESTAMP_IS_VALID(buf))
+                reordered_opaque = GST_BUFFER_TIMESTAMP(buf);
+#endif
 #if USE_SEND_RECEIVE
             num_dec = avcodec_send_packet(base->context, &decoder->packet);
             if (num_dec == 0)
@@ -746,10 +753,15 @@ static GstFlowReturn videodecoder_chain(GstPad *pad, GstObject *parent, GstBuffe
         av_init_packet(&decoder->packet);
         decoder->packet.data = info.data;
         decoder->packet.size = info.size;
+#if AVCODEC_REORDERED_OPAQUE
         if (GST_BUFFER_TIMESTAMP_IS_VALID(buf))
             base->context->reordered_opaque = GST_BUFFER_TIMESTAMP(buf);
         else
             base->context->reordered_opaque = AV_NOPTS_VALUE;
+#else
+        if (GST_BUFFER_TIMESTAMP_IS_VALID(buf))
+            reordered_opaque = GST_BUFFER_TIMESTAMP(buf);
+#endif
 
 #if USE_SEND_RECEIVE
         num_dec = avcodec_send_packet(base->context, &decoder->packet);
@@ -796,7 +808,9 @@ static GstFlowReturn videodecoder_chain(GstPad *pad, GstObject *parent, GstBuffe
                     goto _exit;
                 }
 
+#if AVCODEC_REORDERED_OPAQUE
                 reordered_opaque = decoder->dest_frame->reordered_opaque;
+#endif
                 data0 = decoder->dest_frame->data[0];
                 data1 = decoder->dest_frame->data[1];
                 data2 = decoder->dest_frame->data[2];
@@ -806,7 +820,9 @@ static GstFlowReturn videodecoder_chain(GstPad *pad, GstObject *parent, GstBuffe
 
             if (set_frame_values)
             {
+#if AVCODEC_REORDERED_OPAQUE
                 reordered_opaque = base->frame->reordered_opaque;
+#endif
                 data0 = base->frame->data[0];
                 data1 = base->frame->data[1];
                 data2 = base->frame->data[2];
@@ -825,7 +841,11 @@ static GstFlowReturn videodecoder_chain(GstPad *pad, GstObject *parent, GstBuffe
             }
             else
             {
+#if AVCODEC_FRAME_NUM
+                GST_BUFFER_OFFSET(outbuf) = base->context->frame_num;
+#else
                 GST_BUFFER_OFFSET(outbuf) = base->context->frame_number;
+#endif
                 if (reordered_opaque != AV_NOPTS_VALUE)
                 {
                     GST_BUFFER_TIMESTAMP(outbuf) = reordered_opaque;

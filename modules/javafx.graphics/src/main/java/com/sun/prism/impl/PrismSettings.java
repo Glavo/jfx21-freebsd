@@ -216,7 +216,7 @@ public final class PrismSettings {
                 tryOrderArr = new String[] { "es2" };
             } else if (PlatformUtil.isAndroid()) {
                     tryOrderArr = new String[] { "es2" };
-            } else if (PlatformUtil.isLinux()) {
+            } else if (PlatformUtil.isLinux() || PlatformUtil.isFreeBSD()) {
                 tryOrderArr = new String[] { "es2", "sw" };
             } else {
                 tryOrderArr = new String[] { "sw" };

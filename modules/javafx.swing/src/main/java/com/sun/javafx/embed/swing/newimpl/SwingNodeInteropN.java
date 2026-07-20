@@ -313,7 +313,7 @@ public class SwingNodeInteropN {
             SwingNodeHelper.runOnFxThread(() -> {
                 // On X11 grab is limited to a single XDisplay connection,
                 // so we can't delegate it to another GUI toolkit.
-                if (PlatformUtil.isLinux()) return;
+                if (PlatformUtil.isLinux() || PlatformUtil.isFreeBSD()) return;
 
                 SwingNode swingNode = swingNodeRef.get();
                 if (swingNode != null) {

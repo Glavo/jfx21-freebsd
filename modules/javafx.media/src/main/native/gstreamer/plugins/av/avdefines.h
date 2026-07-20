@@ -53,5 +53,13 @@
 // Not required since 58 and removed in 59
 #define NO_REGISTER_ALL        (LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59,0,0))
 
-#endif  /* AVDEFINES_H */
+// Use "avcodec_free_context()" when "avcodec_close()" is no longer available.
+#define AVCODEC_FREE_CONTEXT   (LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(60,0,0))
 
+// "reordered_opaque" was removed from AVCodecContext and AVFrame.
+#define AVCODEC_REORDERED_OPAQUE (LIBAVCODEC_VERSION_INT < AV_VERSION_INT(60,0,0))
+
+// "frame_number" was renamed to "frame_num".
+#define AVCODEC_FRAME_NUM      (LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(61,0,0))
+
+#endif  /* AVDEFINES_H */

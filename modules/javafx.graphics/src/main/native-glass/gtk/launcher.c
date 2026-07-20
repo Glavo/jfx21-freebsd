@@ -25,7 +25,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef __linux__
 #include <linux/fb.h>
+#endif
 #include <fcntl.h>
 #ifndef __USE_GNU       // required for dladdr() & Dl_info
 #define __USE_GNU
@@ -215,4 +217,3 @@ JNIEXPORT jint JNICALL Java_com_sun_glass_ui_gtk_GtkApplication__1queryLibrary
 
     return com_sun_glass_ui_gtk_GtkApplication_QUERY_ERROR;
 }
-

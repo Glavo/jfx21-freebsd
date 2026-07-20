@@ -464,7 +464,7 @@ WEBKIT_EXECUTABLE(LLIntOffsetsExtractor)
 # after every asm.rb run.
 set(LLIntOutput LLIntAssembly.h)
 
-if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+if (CMAKE_SYSTEM_NAME MATCHES "Linux|FreeBSD")
     set(OFFLINE_ASM_ARGS --binary-format=ELF)
 endif ()
 

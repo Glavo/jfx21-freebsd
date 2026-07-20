@@ -111,12 +111,12 @@ public class NativeMediaManager {
                     NativeLibLoader.loadLibrary("glib-lite");
                 }
 
-                if (!PlatformUtil.isLinux() && !PlatformUtil.isIOS()) {
+                if (!PlatformUtil.isLinux() && !PlatformUtil.isFreeBSD() && !PlatformUtil.isIOS()) {
                     NativeLibLoader.loadLibrary("gstreamer-lite");
                 } else {
                     dependencies.add("gstreamer-lite");
                 }
-                if (PlatformUtil.isLinux()) {
+                if (PlatformUtil.isLinux() || PlatformUtil.isFreeBSD()) {
                     dependencies.add("fxplugins");
                     dependencies.add("avplugin");
                     dependencies.add("avplugin-54");

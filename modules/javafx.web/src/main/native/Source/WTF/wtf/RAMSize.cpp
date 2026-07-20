@@ -31,8 +31,11 @@
 #if OS(WINDOWS)
 #include <windows.h>
 #elif USE(SYSTEM_MALLOC)
-#if OS(LINUX) || OS(FREEBSD)
+#if OS(LINUX)
 #include <sys/sysinfo.h>
+#elif OS(FREEBSD)
+#include <sys/types.h>
+#include <sys/sysctl.h>
 #elif OS(UNIX) || OS(HAIKU)
 #include <unistd.h>
 #endif // OS(LINUX) || OS(FREEBSD) || OS(UNIX) || OS(HAIKU)
@@ -46,7 +49,7 @@
 
 namespace WTF {
 
-#if OS(WINDOWS)
+#if OS(WINDOWS) || OS(FREEBSD)
 static constexpr size_t ramSizeGuess = 512 * MB;
 #endif
 
@@ -60,10 +63,16 @@ static size_t computeRAMSize()
         return ramSizeGuess;
     return status.ullTotalPhys;
 #elif USE(SYSTEM_MALLOC)
-#if OS(LINUX) || OS(FREEBSD)
+#if OS(LINUX)
     struct sysinfo si;
     sysinfo(&si);
     return si.totalram * si.mem_unit;
+#elif OS(FREEBSD)
+    unsigned long memory;
+    size_t length = sizeof(memory);
+    if (sysctlbyname("hw.physmem", &memory, &length, nullptr, 0))
+        return ramSizeGuess;
+    return memory;
 #elif OS(UNIX) || OS(HAIKU)
     long pages = sysconf(_SC_PHYS_PAGES);
     long pageSize = sysconf(_SC_PAGE_SIZE);

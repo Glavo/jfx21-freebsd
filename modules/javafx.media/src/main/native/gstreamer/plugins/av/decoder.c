@@ -127,9 +127,12 @@ gboolean basedecoder_open_decoder(BaseDecoder *decoder, CodecIDType id)
             int ret = avcodec_open2(decoder->context, decoder->codec, NULL);
             if (ret < 0) // Can't open codec
             {
+#if AVCODEC_FREE_CONTEXT
+                avcodec_free_context(&decoder->context);
+#else
                 av_free(decoder->context);
-
                 decoder->context = NULL;
+#endif
                 decoder->codec = NULL;
 
                 result = FALSE;
@@ -187,10 +190,14 @@ void basedecoder_close_decoder(BaseDecoder *decoder)
 {
     if (decoder->context)
     {
+#if AVCODEC_FREE_CONTEXT
+        avcodec_free_context(&decoder->context);
+#else
         avcodec_close(decoder->context);
         av_free(decoder->context);
+        decoder->context = NULL;
+#endif
     }
-    decoder->context = NULL;
 
     if(decoder->codec_data)
     {

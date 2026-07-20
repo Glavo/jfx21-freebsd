@@ -29,7 +29,9 @@
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
+#ifdef __linux__
 #include <linux/fb.h>
+#endif
 #include <sys/ioctl.h>
 
 #include "../PrismES2Defs.h"

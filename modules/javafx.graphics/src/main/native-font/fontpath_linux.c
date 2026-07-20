@@ -23,7 +23,7 @@
  * questions.
  */
 
-#if defined (__linux__) && ! defined (ANDROID_NDK)
+#if (defined (__linux__) || defined(__FreeBSD__)) && ! defined (ANDROID_NDK)
 
 #include <string.h>
 #include <stdio.h>

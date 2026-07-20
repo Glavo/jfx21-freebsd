@@ -184,7 +184,7 @@ public abstract class Toolkit {
             return DEFAULT_TOOLKIT;
         } else if (PlatformUtil.isMac()) {
             return DEFAULT_TOOLKIT;
-        } else if (PlatformUtil.isLinux()) {
+        } else if (PlatformUtil.isLinux() || PlatformUtil.isFreeBSD()) {
             return DEFAULT_TOOLKIT;
         } else if (PlatformUtil.isIOS()) {
             return DEFAULT_TOOLKIT;

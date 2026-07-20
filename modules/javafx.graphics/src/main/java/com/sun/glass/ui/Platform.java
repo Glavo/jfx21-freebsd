@@ -55,6 +55,8 @@ final class Platform {
                    type = WINDOWS;
                 else if (userPlatform.equals("linux"))
                    type = GTK;
+                else if (userPlatform.equals("freebsd"))
+                   type = GTK;
                 else if (userPlatform.equals("gtk"))
                    type = GTK;
                 else if (userPlatform.equals("ios"))
@@ -68,7 +70,7 @@ final class Platform {
                 type = MAC;
             } else if (PlatformUtil.isWindows()) {
                 type = WINDOWS;
-            } else if (PlatformUtil.isLinux()) {
+            } else if (PlatformUtil.isLinux() || PlatformUtil.isFreeBSD()) {
                 type = GTK;
             } else if (PlatformUtil.isIOS()) {
                 type = IOS;

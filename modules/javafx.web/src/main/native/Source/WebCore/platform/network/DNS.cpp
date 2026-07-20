@@ -40,15 +40,12 @@
 
 #if OS(UNIX)
 #include <arpa/inet.h>
+#include <sys/socket.h>
 #endif
 
 #if OS(WINDOWS) && PLATFORM(JAVA)
 // Include Windows-specific headers for clang-cl
 #include <winsock2.h>
-#endif
-
-#if OS(QNX)
-#include <sys/socket.h>
 #endif
 
 namespace WebCore {

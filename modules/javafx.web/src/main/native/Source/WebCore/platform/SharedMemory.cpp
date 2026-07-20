@@ -98,7 +98,9 @@ void SharedMemoryHandle::takeOwnershipOfMemory(MemoryLedger) const
 void SharedMemoryHandle::setOwnershipOfMemory(const ProcessIdentity&, MemoryLedger) const
 {
 }
+#endif
 
+#if !PLATFORM(COCOA) && !USE(UNIX_DOMAIN_SOCKETS)
 RefPtr<SharedMemory> SharedMemory::map(Handle&& handle, Protection protection)
 {
     return nullptr;

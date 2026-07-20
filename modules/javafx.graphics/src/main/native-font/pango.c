@@ -23,7 +23,7 @@
  * questions.
  */
 
-#if defined __linux__
+#if defined __linux__ || defined(__FreeBSD__)
 #if defined _ENABLE_PANGO
 
 #include <jni.h>
@@ -421,10 +421,10 @@ JNIEXPORT jlong JNICALL OS_NATIVE(g_1utf8_1pointer_1to_1offset)
 }
 
 JNIEXPORT jlong JNICALL OS_NATIVE(g_1utf8_1strlen)
-    (JNIEnv *env, jclass that, jlong str, jlong pos)
+    (JNIEnv *env, jclass that, jlong str, jlong max)
 {
     if (!str) return 0;
-    return (jlong)g_utf8_strlen((const gchar *)str, (const gchar *)pos);
+    return (jlong)g_utf8_strlen((const gchar *)str, (gssize)max);
 }
 
 JNIEXPORT jlong JNICALL OS_NATIVE(g_1utf16_1to_1utf8)

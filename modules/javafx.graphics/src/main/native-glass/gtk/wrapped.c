@@ -24,7 +24,9 @@
  */
 
 #include <stdio.h>
+#ifdef __linux__
 #include <linux/fb.h>
+#endif
 #include <fcntl.h>
 #ifndef __USE_GNU       // required for dladdr() & Dl_info
 #define __USE_GNU
@@ -147,4 +149,3 @@ void wrapped_gdk_x11_display_set_window_scale (GdkDisplay *display,
         (*_gdk_x11_display_set_window_scale)(display, scale);
     }
 }
-

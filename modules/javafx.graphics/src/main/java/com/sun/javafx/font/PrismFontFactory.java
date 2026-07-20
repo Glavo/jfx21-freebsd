@@ -85,7 +85,7 @@ public abstract class PrismFontFactory implements FontFactory {
     static {
         isWindows = PlatformUtil.isWindows();
         isMacOSX  = PlatformUtil.isMac();
-        isLinux   = PlatformUtil.isLinux();
+        isLinux   = PlatformUtil.isLinux() || PlatformUtil.isFreeBSD();
         isIOS     = PlatformUtil.isIOS();
         isAndroid = PlatformUtil.isAndroid();
         isEmbedded = PlatformUtil.isEmbedded();

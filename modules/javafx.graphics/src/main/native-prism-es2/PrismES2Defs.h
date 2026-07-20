@@ -26,7 +26,7 @@
 #ifndef _Prism_es2_defs_h_
 #define _Prism_es2_defs_h_
 
-#if defined(SOLARIS) || defined(LINUX) || defined(ANDROID_NDK) /* SOLARIS || LINUX */
+#if defined(SOLARIS) || defined(LINUX) || defined(FREEBSD) || defined(ANDROID_NDK) /* SOLARIS || LINUX || FREEBSD */
 #define GLX_GLEXT_PROTOTYPES
 #define GLX_GLXEXT_PROTOTYPES
 #define UNIX
@@ -64,7 +64,7 @@
 #include "eglWrapper/eglWrapper.h"
 #endif
 
-#endif /* SOLARIS || LINUX */
+#endif /* SOLARIS || LINUX || FREEBSD */
 
 #ifdef __APPLE__
 #include <TargetConditionals.h>

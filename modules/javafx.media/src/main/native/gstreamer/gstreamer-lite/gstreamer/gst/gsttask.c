@@ -75,7 +75,7 @@
 
 #include <stdio.h>
 
-#ifdef HAVE_SYS_PRCTL_H
+#if defined(__linux__) && defined(HAVE_SYS_PRCTL_H)
 #include <sys/prctl.h>
 #endif
 

@@ -37,7 +37,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
-#ifdef HAVE_SYS_PRCTL_H
+#if defined(__linux__) && defined(HAVE_SYS_PRCTL_H)
 #include <sys/prctl.h>
 #endif
 #ifdef HAVE_SYS_RESOURCE_H

@@ -56,6 +56,7 @@ import java.text.Bidi;
 import java.util.function.Predicate;
 
 import static com.sun.javafx.PlatformUtil.isLinux;
+import static com.sun.javafx.PlatformUtil.isFreeBSD;
 import static com.sun.javafx.PlatformUtil.isMac;
 import static com.sun.javafx.PlatformUtil.isWindows;
 import static com.sun.javafx.scene.control.inputmap.KeyBinding.OptionalBoolean;
@@ -119,7 +120,7 @@ public abstract class TextInputControlBehavior<T extends TextInputControl> exten
         // control is not in the correct state / on the correct platform
         final Predicate<KeyEvent> validWhenEditable = e -> !c.isEditable();
         final Predicate<KeyEvent> validOnWindows = e -> !PlatformUtil.isWindows();
-        final Predicate<KeyEvent> validOnLinux = e -> !PlatformUtil.isLinux();
+        final Predicate<KeyEvent> validOnLinux = e -> !PlatformUtil.isLinux() && !PlatformUtil.isFreeBSD();
 
         KeyMapping cancelEditMapping;
         KeyMapping fireMapping;
@@ -566,7 +567,7 @@ public abstract class TextInputControlBehavior<T extends TextInputControl> exten
 
     public void selectNextWord() {
         TextInputControl textInputControl = getNode();
-        if (isMac() || isLinux()) {
+        if (isMac() || isLinux() || isFreeBSD()) {
             textInputControl.selectEndOfNextWord();
         } else {
             textInputControl.selectNextWord();
@@ -615,7 +616,7 @@ public abstract class TextInputControlBehavior<T extends TextInputControl> exten
 
     protected void nextWord() {
         TextInputControl textInputControl = getNode();
-        if (isMac() || isLinux()) {
+        if (isMac() || isLinux() || isFreeBSD()) {
             textInputControl.endOfNextWord();
         } else {
             textInputControl.nextWord();

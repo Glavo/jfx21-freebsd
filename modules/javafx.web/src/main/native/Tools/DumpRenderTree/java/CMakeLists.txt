@@ -27,6 +27,10 @@ set(DumpRenderTree_LIBRARIES
     ${ICU_LIBRARIES}
 )
 
+if (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+    list(APPEND DumpRenderTree_LIBRARIES WTF)
+endif ()
+
 set(DumpRenderTree_PRIVATE_INCLUDE_DIRECTORIES
     ${CMAKE_BINARY_DIR}
     ${DumpRenderTree_DERIVED_SOURCES_DIR}

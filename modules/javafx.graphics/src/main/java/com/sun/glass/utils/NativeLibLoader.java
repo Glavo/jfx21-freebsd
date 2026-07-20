@@ -359,7 +359,7 @@ public class NativeLibLoader {
             relativeDir = "bin/javafx";
         } else if (PlatformUtil.isMac()) {
             relativeDir = "lib";
-        } else if (PlatformUtil.isLinux()) {
+        } else if (PlatformUtil.isLinux() || PlatformUtil.isFreeBSD()) {
             relativeDir = "lib";
         }
 
@@ -379,7 +379,7 @@ public class NativeLibLoader {
             relativeDir = "../bin";
         } else if (PlatformUtil.isMac()) {
             relativeDir = ".";
-        } else if (PlatformUtil.isLinux()) {
+        } else if (PlatformUtil.isLinux() || PlatformUtil.isFreeBSD()) {
             relativeDir = ".";
         }
 
@@ -416,7 +416,7 @@ public class NativeLibLoader {
                 } else if (PlatformUtil.isMac()) {
                     libPrefix = "lib";
                     libSuffix = ".dylib";
-                } else if (PlatformUtil.isLinux()) {
+                } else if (PlatformUtil.isLinux() || PlatformUtil.isFreeBSD()) {
                     libPrefix = "lib";
                     libSuffix = ".so";
                 }

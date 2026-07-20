@@ -707,7 +707,7 @@ public class SwingNode extends Node {
         if (lwFrame == null) {
             return;
         }
-        if (PlatformUtil.isLinux()) {
+        if (PlatformUtil.isLinux() || PlatformUtil.isFreeBSD()) {
             // Workaround to block FocusOut/FocusIn notifications from Unity
             // focus grabbing upon Alt press
             if (deactivate == null || !deactivate.isRunning()) {
@@ -809,7 +809,7 @@ public class SwingNode extends Node {
     private void ungrabFocus(boolean postUngrabEvent) {
         // On X11 grab is limited to a single XDisplay connection,
         // so we can't delegate it to another GUI toolkit.
-        if (PlatformUtil.isLinux()) return;
+        if (PlatformUtil.isLinux() || PlatformUtil.isFreeBSD()) return;
 
         if (grabbed &&
             getScene() != null &&
@@ -976,5 +976,4 @@ public class SwingNode extends Node {
         }
     }
 }
-
 
