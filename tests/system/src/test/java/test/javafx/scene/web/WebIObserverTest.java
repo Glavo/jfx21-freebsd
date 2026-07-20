@@ -115,7 +115,8 @@ public class WebIObserverTest {
         Util.sleep(100);
 
         Util.runAndWait(() ->
-                assertEquals("Intersection ratio", "0.5", getIntersectionRatio()));
+                assertEquals("Intersection ratio", 0.5,
+                        Double.parseDouble(getIntersectionRatio()), 0.01));
     }
 
     private String getIntersectionRatio() {

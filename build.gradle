@@ -2206,6 +2206,7 @@ project(":base") {
         "RELEASE_VERSION_SHORT": RELEASE_VERSION_SHORT,
         "RELEASE_VERSION_LONG": RELEASE_VERSION_LONG];
     task processVersionInfo(type: Copy, description: "Replace params in VersionInfo and copy file to destination") {
+        inputs.properties(replacements)
         doFirst { mkdir "$buildDir/gensrc/java" }
         from "src/main/version-info"
         into "$buildDir/gensrc/java/com/sun/javafx/runtime"
@@ -5279,10 +5280,18 @@ compileTargets { t ->
 
             def moduleLibDir = "${baseProject.buildDir}/${platformPrefix}module-lib"
             final File javafxProperties = file("${moduleLibDir}/javafx.properties")
+            inputs.property("RELEASE_VERSION_SHORT", RELEASE_VERSION_SHORT)
+            inputs.property("RELEASE_VERSION_LONG", RELEASE_VERSION_LONG)
+            inputs.property("PROMOTED_BUILD_NUMBER", PROMOTED_BUILD_NUMBER)
             outputs.file(javafxProperties)
+
+            if (targetProperties.containsKey("javafxProperties")) {
+                inputs.property("javafxProperties", targetProperties.javafxProperties)
+            }
 
             if (targetProperties.containsKey("javafxPlatformProperties")) {
                 final File javafxPlatformProperties = file("${moduleLibDir}/javafx.platform.properties")
+                inputs.property("javafxPlatformProperties", targetProperties.javafxPlatformProperties)
                 outputs.file(javafxPlatformProperties)
             }
 

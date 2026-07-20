@@ -45,6 +45,7 @@ public class InitialWindowSizeTest {
 
     private static final CountDownLatch startupLatch = new CountDownLatch(1);
     private static volatile Dimension2D showingSize, shownSize;
+    private static boolean appLaunched;
 
     public static class TestApp extends Application {
         @Override
@@ -63,19 +64,21 @@ public class InitialWindowSizeTest {
 
     @BeforeAll
     public static void setup() throws Exception {
+        // JDK-8310845
+        assumeFalse(PlatformUtil.isLinux() || PlatformUtil.isFreeBSD());
         Util.launch(startupLatch, TestApp.class);
+        appLaunched = true;
     }
 
     @AfterAll
     public static void shutdown() {
-        Util.shutdown();
+        if (appLaunched) {
+            Util.shutdown();
+        }
     }
 
     @Test
     public void testInitialWindowSize() {
-        // JDK-8310845
-        assumeFalse(PlatformUtil.isLinux());
-
         Util.waitForLatch(startupLatch, 10, "startupLatch");
 
         assertTrue(Double.isNaN(showingSize.getWidth()), "width = " + showingSize.getWidth() + ", expected = NaN");

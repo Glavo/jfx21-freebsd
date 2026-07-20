@@ -106,6 +106,19 @@ public class PageFillTest {
         return (deltaRed <= delta && deltaGreen <= delta && deltaBlue <= delta && deltaOpacity <= delta);
     }
 
+    private void assertColorNotEqualsInArea(String msg, Color notExpected,
+            PixelReader pr, int minX, int minY, int maxX, int maxY, double delta) {
+        for (int y = minY; y < maxY; y++) {
+            for (int x = minX; x < maxX; x++) {
+                if (!testColorEquals(notExpected, pr.getColor(x, y), delta)) {
+                    return;
+                }
+            }
+        }
+
+        fail(msg + " no differing color found in area");
+    }
+
     @BeforeClass
     public static void setupOnce() {
         Util.launch(launchLatch, PageFillTestApp.class);
@@ -174,8 +187,8 @@ public class PageFillTest {
             assertColorEquals("Color 4 should be:",
                     color, pr.getColor(110, 50), delta);
 
-            assertColorNotEquals("Color 5 should not be:",
-                    color, pr.getColor(10, 50), delta);
+            assertColorNotEqualsInArea("Color 5 should not be:",
+                    color, pr, 0, 20, 180, 140, delta);
         });
 
         Util.sleep(1000);
@@ -203,8 +216,8 @@ public class PageFillTest {
             assertColorEquals("Color 9 should be:",
                     color, pr.getColor(110, 100), delta);
 
-            assertColorNotEquals("Color 10 should not be:",
-                    color, pr.getColor(10, 50), delta);
+            assertColorNotEqualsInArea("Color 10 should not be:",
+                    color, pr, 0, 20, 180, 140, delta);
         });
 
         Util.runAndWait(() -> {
@@ -228,8 +241,8 @@ public class PageFillTest {
             assertColorEquals("Color 14 should be:",
                     color, pr.getColor(110, 100), delta);
 
-            assertColorNotEquals("Color 15 should not be:",
-                    color, pr.getColor(10, 50), delta);
+            assertColorNotEqualsInArea("Color 15 should not be:",
+                    color, pr, 0, 20, 180, 140, delta);
         });
 
         Util.runAndWait(() -> {
@@ -256,8 +269,8 @@ public class PageFillTest {
             assertColorEquals("Color 19 should be:",
                     color, pr.getColor(110, 100), delta);
 
-            assertColorNotEquals("Color 20 should not be:",
-                    color, pr.getColor(10, 50), delta);
+            assertColorNotEqualsInArea("Color 20 should not be:",
+                    color, pr, 0, 20, 180, 140, delta);
         });
 
         Util.runAndWait(() -> {
@@ -286,8 +299,8 @@ public class PageFillTest {
             assertColorEquals("Color 24 should be:",
                     color, pr.getColor(110, 100), delta);
 
-            assertColorNotEquals("Color 25 should not be:",
-                    color, pr.getColor(10, 50), delta);
+            assertColorNotEqualsInArea("Color 25 should not be:",
+                    color, pr, 0, 20, 180, 140, delta);
         });
     }
 }

@@ -109,7 +109,6 @@ JNIEXPORT void JNICALL Java_com_sun_glass_ui_gtk_GtkApplication__1initGTK
     env->ExceptionClear();
     init_threads();
 
-    gdk_threads_enter();
     gtk_init(NULL, NULL);
 
     // Major version is checked before loading
@@ -199,8 +198,13 @@ JNIEXPORT void JNICALL Java_com_sun_glass_ui_gtk_GtkApplication__1runLoop
     (void)obj;
     (void)noErrorTrap;
 
+    gdk_threads_enter();
+
     env->CallVoidMethod(launchable, jRunnableRun);
-    CHECK_JNI_EXCEPTION(env);
+    if (check_and_clear_exception(env)) {
+        gdk_threads_leave();
+        return;
+    }
 
     // GTK installs its own X error handler that conflicts with AWT.
     // During drag and drop, AWT hides errors so we need to hide them
